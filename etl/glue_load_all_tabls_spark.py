@@ -16,8 +16,8 @@ spark = SparkSession \
 
 def main():
     SNOWFLAKE_SOURCE_NAME = "net.snowflake.spark.snowflake"
-    snowflake_database = "ECOMMERCE_DB"
-    snowflake_schema = "ECOMMERCE_DEV"
+    snowflake_database = "BANK_COMMERCIAL"
+    snowflake_schema = "BK_CURATED_DATA"
     source_table_name = "LINEITEM"
     snowflake_options = {
         "sfUrl": "gbtnfuf-kv47012.snowflakecomputing.com",
@@ -27,9 +27,10 @@ def main():
         "sfSchema": snowflake_schema,
         "sfWarehouse": "COMPUTE_WH"
     }
-    args = getResolvedOptions(sys.argv, ["file", "bucket"])
+    args = getResolvedOptions(sys.argv, ["file", "bucket", "tgttable"])
     file_name = args['file']
     bucket_name = args['bucket']
+    tgt_tbl = args['tgttable']
     input_file_path = "s3://{}/{}".format(bucket_name, file_name)
     '''
     df = spark.read \
@@ -47,7 +48,7 @@ def main():
     df4 = spark.read.options(header='True', inferSchema='True', delimiter=',').csv(input_file_path)
     df4.write.format("snowflake") \
         .options(**snowflake_options) \
-        .option("dbtable", "test_glue_t").mode("overwrite") \
+        .option("dbtable", tgt_tbl).mode("append") \
         .save()
 
 
