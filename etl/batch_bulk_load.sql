@@ -4,7 +4,7 @@ create database Bank_Commercial;
 use Bank_Commercial;
 create schema bk_curated_data;
 
-BANK_COMMERCIAL.BK_CURATED_DATA
+--BANK_COMMERCIAL.BK_CURATED_DATA
 
 use schema "Bank_Commercial"."bk_curated_data";
 
