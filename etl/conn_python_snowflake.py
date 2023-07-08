@@ -36,18 +36,19 @@ def build_sql(sql_query):
     return df
 
 def main():
-    user_name = 'praveen2022',
-    password = 'Spider@2019',
-    account = 'gbtnfuf-kv47012',
-    warehouse = 'test_large',
-    database = 'BANK_COMMERCIAL',
-    schema = 'BK_CURATED_DATA'
 
-    sql_query = """select * from BANK_COMMERCIAL.BK_CURATED_DATA.UNIVERSITY_ACCT where STATE is NULL limit 10"""
-    print(12)
+    sql_query = """select * from BANK_COMMERCIAL.BK_CURATED_DATA.UNIVERSITY_ACCT  limit 100000"""
+   # print(12)
     df_n=build_sql(sql_query)
     values={"STATE":'Default'}
+
     df1=df_n.fillna(value=values)
-    print(df1.to_string())
+    print(df1.dtypes)
+    df1['STATE'] = df1['STATE'].astype(pd.StringDtype())
+    #print(df1.to_string())
+    df_out=df1.groupby('STATE')['DOMAINS'].nunique()
+    #df_out.to_csv('output.csv', sep='|')
+    #print(df.dtypes)
+    print(df1.dtypes)
 
 main()
